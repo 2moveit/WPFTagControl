@@ -1,0 +1,25 @@
+type project
+title
+    WPFTagControl
+owners
+    Kai Timmermann
+authors 
+    Kai Timmermann
+projectUrl
+    http://github.com/2moveit/WPFTagControl
+iconUrl
+    https://raw.githubusercontent.com/2moveit/WPFTagControl/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/2moveit/WPFTagControl/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    WPF Control Token Tag
+summary
+    WPF control for tags/tokens
+description
+    A WPF control to add/remove/edit tags/tokens with autocomplete functionality.
+
+

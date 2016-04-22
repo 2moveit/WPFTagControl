@@ -1,0 +1,175 @@
+﻿<!--  Based on work of adabyron http://stackoverflow.com/questions/15167809/how-can-i-create-a-tagging-control-similar-to-evernote-in-wpf  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPFTagControl"
+                    xmlns:tkInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit">
+
+    <SolidColorBrush x:Key="HighlightBrush" Color="DodgerBlue" />
+
+    <!--  EvernoteTagControl default style  -->
+    <Style TargetType="{x:Type local:TagControl}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="White" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="White" />
+            <LinearGradientBrush x:Key="IconBrush" EndPoint="0,1">
+                <GradientStop Offset="0" Color="#5890f0" />
+                <GradientStop Offset="1" Color="#0351d7" />
+            </LinearGradientBrush>
+        </Style.Resources>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TagControl}">
+                    <StackPanel x:Name="PART_ControlStackPanel"
+                                HorizontalAlignment="Stretch"
+                                Orientation="Horizontal">
+                        <Path x:Name="PART_TagIcon"
+                              Height="19"
+                              Margin="2,7,2,0"
+                              VerticalAlignment="Top"
+                              Data="M 50.535714,0.44196425 0.00446427,34.754464 l 0,106.906246 100.71874573,0 0,-107.124996 L 50.535714,0.44196425 z m 0.1875,21.21874975 c 6.311826,0 11.40625,5.094424 11.40625,11.40625 0,6.311826 -5.094424,11.4375 -11.40625,11.4375 -6.311826,0 -11.4375,-5.125674 -11.4375,-11.4375 0,-6.311826 5.125674,-11.40625 11.4375,-11.40625 z"
+                              Fill="{StaticResource IconBrush}"
+                              Stretch="Uniform" />
+                        <ItemsPresenter />
+                        <Button x:Name="PART_CreateTagButton"
+                                Margin="2,10,0,0"
+                                VerticalAlignment="Top"
+                                Content="{Binding AddNewTagText,
+                                                  RelativeSource={RelativeSource TemplatedParent},
+                                                  Mode=TwoWay}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter VerticalAlignment="Center" TextElement.Foreground="#FF555555" />
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEditing" Value="True">
+                            <Setter TargetName="PART_CreateTagButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel>
+                        <WrapPanel.Resources>
+                            <local:MaxWidthMultiConverter x:Key="MaxWidthMultiConverter" />
+                        </WrapPanel.Resources>
+                        <WrapPanel.MaxWidth>
+                            <MultiBinding Converter="{StaticResource MaxWidthMultiConverter}">
+                                <Binding ElementName="PART_ControlStackPanel" Path="ActualWidth" />
+                                <Binding ElementName="PART_TagIcon" Path="ActualWidth" />
+                                <Binding ElementName="PART_CreateTagButton" Path="ActualWidth" />
+                            </MultiBinding>
+                        </WrapPanel.MaxWidth>
+                    </WrapPanel>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  EvernoteTagItem default style  -->
+    <Style TargetType="{x:Type local:TagItem}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="MinWidth" Value="50" />
+        <Setter Property="Margin" Value="0,2,2,0" />
+        <Setter Property="Padding" Value="5,2,0,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TagItem}">
+                    <Button x:Name="PART_TagButton"
+                            Margin="{TemplateBinding Margin}"
+                            Content="{TemplateBinding Text}"
+                            Padding="{TemplateBinding Padding}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Margin="{TemplateBinding Margin}"
+                                        Background="#01FFFFFF"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        CornerRadius="2"
+                                        Padding="{TemplateBinding Padding}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ContentPresenter Margin="0,0,0,2"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalAlignment="Center" />
+                                        <Button x:Name="PART_DeleteTagButton"
+                                                Grid.Column="1"
+                                                Margin="3,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Visibility="Hidden">
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Grid Width="10"
+                                                          Height="10"
+                                                          Background="#01FFFFFF">
+                                                        <Path ClipToBounds="True"
+                                                              Data="M 85.364473,6.9977109 6.0640998,86.29808 6.5333398,85.76586 M 6.9926698,7.4977169 86.293043,86.79809 85.760823,86.32885"
+                                                              Stretch="Uniform"
+                                                              Stroke="{StaticResource HighlightBrush}"
+                                                              StrokeThickness="2" />
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource HighlightBrush}" />
+                                        <Setter TargetName="PART_DeleteTagButton" Property="Visibility" Value="Visible" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEditing" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type local:TagItem}">
+                            <tkInput:AutoCompleteBox x:Name="PART_InputBox"
+                                                     Margin="0,5,0,0"
+                                                     IsTextCompletionEnabled="True"
+                                                     ItemsSource="{Binding PossibleSuggestedTags,
+                                                                           RelativeSource={RelativeSource AncestorType={x:Type local:TagControl}}}"
+                                                     Text="{Binding Text,
+                                                                    RelativeSource={RelativeSource TemplatedParent},
+                                                                    Mode=TwoWay}" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

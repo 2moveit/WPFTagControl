@@ -11,9 +11,8 @@ namespace TestUI
         public MainWindow()
         {
             InitializeComponent();
-            ctl_Tags.SuggestedTags.Add("Tag Code 1");
-            ctl_Tags.SuggestedTags.Add("Tag Code 2");
-            ctl_Tags.SuggestedTags.Add("Tag Code 3");
+            DataContext = new MainWindowViewModel();
+          
         }
 
 

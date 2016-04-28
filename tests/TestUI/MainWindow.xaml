@@ -14,17 +14,18 @@
         <cont:TagControl x:Name="ctl_Tags"
                          VerticalAlignment="Stretch"
                          AddNewTagText="Click to add tags..."
+                         SuggestedTags="{Binding SuggestedTags}"
                          TagAdded="Ctl_Tags_TagAdded"
                          TagClick="Ctl_Tags_TagClick"
                          TagRemoved="Ctl_Tags_OnTagRemoved"
                          TagsChanged="Ctl_Tags_OnTagsChanged">
-            <cont:TagControl.SuggestedTags>
+            <!--<cont:TagControl.SuggestedTags>
                 <s:String>Tag One</s:String>
                 <s:String>Tag Two</s:String>
                 <s:String>Tag Three</s:String>
                 <s:String>Tag Four</s:String>
                 <s:String>Tag Five</s:String>
-            </cont:TagControl.SuggestedTags>
+            </cont:TagControl.SuggestedTags>-->
         </cont:TagControl>
         <Label Content="LastAdded:" />
         <Label x:Name="LastAdded" Content="None" />

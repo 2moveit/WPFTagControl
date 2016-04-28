@@ -1,0 +1,40 @@
+﻿<Window x:Class="TestUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cont="clr-namespace:WPFTagControl;assembly=WPFTagControl"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow"
+        Width="525"
+        Height="350"
+        ResizeMode="NoResize"
+        mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Stretch">
+        <cont:TagControl x:Name="ctl_Tags"
+                         VerticalAlignment="Stretch"
+                         AddNewTagText="Click to add tags..."
+                         TagAdded="Ctl_Tags_TagAdded"
+                         TagClick="Ctl_Tags_TagClick"
+                         TagRemoved="Ctl_Tags_OnTagRemoved"
+                         TagsChanged="Ctl_Tags_OnTagsChanged">
+            <cont:TagControl.SuggestedTags>
+                <s:String>Tag One</s:String>
+                <s:String>Tag Two</s:String>
+                <s:String>Tag Three</s:String>
+                <s:String>Tag Four</s:String>
+                <s:String>Tag Five</s:String>
+            </cont:TagControl.SuggestedTags>
+        </cont:TagControl>
+        <Label Content="LastAdded:" />
+        <Label x:Name="LastAdded" Content="None" />
+        <Label Content="LastClicked:" />
+        <Label x:Name="LastClicked" Content="None" />
+        <Label Content="SelectionChanged:" />
+        <Label x:Name="SelectionChanged" Content="None" />
+        <Label Content="Added:" />
+        <Label x:Name="Added" Content="None" />
+        <Label Content="Removed:" />
+        <Label x:Name="Removed" Content="None" />
+    </StackPanel>
+</Window>

@@ -84,7 +84,9 @@ Target "AssemblyInfo" (fun _ ->
           Attribute.Product project
           Attribute.Description summary
           Attribute.Version release.AssemblyVersion
-          Attribute.FileVersion release.AssemblyVersion ]
+          Attribute.FileVersion release.AssemblyVersion
+//          Attribute.StringAttribute("ThemeInfo","ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly", "System.Windows")
+          ]
 
     let getProjectDetails projectPath =
         let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)

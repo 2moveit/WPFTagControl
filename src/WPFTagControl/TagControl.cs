@@ -35,6 +35,8 @@ namespace WPFTagControl
         {
             TagAdded += (s, e) => RaiseTagsChanged();
             TagRemoved += (s, e) => RaiseTagsChanged();
+
+            SuggestedTags = new List<string>();
         }
 
         public List<string> PossibleSuggestedTags

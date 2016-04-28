@@ -5,9 +5,9 @@ namespace WPFTagControl
 {
     public class TagsChangedEventArgs : EventArgs
     {
-        public List<TagItem> Items { get; set; }
+        public IList<TagItem> Items { get; set; }
 
-        public TagsChangedEventArgs(List<TagItem> items)
+        public TagsChangedEventArgs(IList<TagItem> items)
         {
             this.Items = items;
         }

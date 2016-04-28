@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using WPFTagControl;
 
 namespace TestUI
@@ -29,7 +30,7 @@ namespace TestUI
 
         private void Ctl_Tags_OnTagsChanged(object sender, TagsChangedEventArgs e)
         {
-            SelectionChanged.Content = e.Items.Count;
+            SelectionChanged.Content = e.Items.Aggregate("", (s, item) => $"{s} {item.Text}");
         }
 
 

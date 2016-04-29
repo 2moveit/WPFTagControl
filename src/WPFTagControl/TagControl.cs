@@ -8,31 +8,15 @@ using System.Windows.Shapes;
 
 namespace WPFTagControl
 {
-    /// <remarks>Based on work of adabyron http://stackoverflow.com/questions/15167809/how-can-i-create-a-tagging-control-similar-to-evernote-in-wpf</remarks>
+    /// <remarks>
+    ///     Based on work of adabyron
+    ///     http://stackoverflow.com/questions/15167809/how-can-i-create-a-tagging-control-similar-to-evernote-in-wpf
+    /// </remarks>
     [TemplatePart(Name = "PART_CreateTagButton", Type = typeof (Button))]
     public class TagControl : ListBox
     {
         public static readonly DependencyProperty SelectedTagsProperty = DependencyProperty.Register("SelectedTags",
-         typeof(IList<string>), typeof(TagControl), new FrameworkPropertyMetadata(null, OnSelectedTagsChanged));
-
- 
-        private static void OnSelectedTagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var c = (TagControl)d;
-            c.ItemsSource = ((IList<string>)e.NewValue).Select(i => new TagItem(i)).ToList();
-        }
-        public IList SelectedTags
-        {
-            get
-            {
-                return (IList)GetValue(SelectedTagsProperty);
-            }
-            set
-            {
-                SetValue(SelectedTagsProperty, value);
-            }
-        }
-
+            typeof (IList<string>), typeof (TagControl), new FrameworkPropertyMetadata(null, OnSelectedTagsChanged));
 
 
         public static readonly DependencyProperty SuggestedTagsProperty = DependencyProperty.Register("SuggestedTags",
@@ -57,21 +41,17 @@ namespace WPFTagControl
         public TagControl()
         {
             TagAdded += (s, e) => RaiseTagsChanged();
-            TagAdded += (s, e) => UpdateSelectedTagsAdd(e);
+            TagAdded += (s, e) => UpdateSelectedTagsOnAdd(e);
             TagRemoved += (s, e) => RaiseTagsChanged();
-            TagRemoved += (s, e) => UpdateSelectedTagsRemove(e);
-            
+            TagRemoved += (s, e) => UpdateSelectedTagsOnRemove(e);
+
             SuggestedTags = new List<string>();
         }
 
-        private void UpdateSelectedTagsRemove(TagEventArgs e)
+        public IList<string> SelectedTags
         {
-            SelectedTags.Remove(e.Item.Text);
-        }
-
-        private void UpdateSelectedTagsAdd(TagEventArgs e)
-        {
-            SelectedTags.Add(e.Item.Text);
+            get { return (IList<string>) GetValue(SelectedTagsProperty); }
+            set { SetValue(SelectedTagsProperty, value); }
         }
 
         public List<string> PossibleSuggestedTags
@@ -109,6 +89,38 @@ namespace WPFTagControl
             internal set { SetValue(IsEditingPropertyKey, value); }
         }
 
+
+        private static void OnSelectedTagsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = (TagControl) d;
+            c.ItemsSource = ((IList<string>) e.NewValue).Select(i => new TagItem(i)).ToList();
+        }
+
+        private void UpdateSelectedTagsOnRemove(TagEventArgs e)
+        {
+            if (e.Item == null)
+                return;
+            if (!string.IsNullOrEmpty(e.Item.Text)) // Remove if delete button was clicked
+                SelectedTags.Remove(e.Item.Text);
+            else  // Remove if backspace was used to delete tag (TagItem Text was changed to empty and was then removed)
+            {
+                var source = (IList<TagItem>) ItemsSource;
+                SelectedTags.Where(i => source.All(s => !s.Text.Equals(i)))
+                    .ToList()
+                    .ForEach(r => SelectedTags.Remove(r));
+            }
+        }
+
+        private void UpdateSelectedTagsOnAdd(TagEventArgs e)
+        {
+            var source = (IList<TagItem>) ItemsSource;
+            if (source.Count == SelectedTags.Count) //Update SelectedTags list if user edits tags
+                SelectedTags.Where(i => source.All(s => !s.Text.Equals(i) || i.Equals(e.Item.Text)))
+                    .ToList()
+                    .ForEach(r => SelectedTags.Remove(r));
+            SelectedTags.Add(e.Item.Text);
+        }
+
         public event EventHandler<TagEventArgs> TagClick;
         public event EventHandler<TagEventArgs> TagAdded;
         public event EventHandler<TagEventArgs> TagRemoved;
@@ -122,14 +134,14 @@ namespace WPFTagControl
 
         public void ApplyTemplate(TagItem appliedTag = null)
         {
-            Button createBtn = GetTemplateChild("PART_CreateTagButton") as Button;
+            var createBtn = GetTemplateChild("PART_CreateTagButton") as Button;
             if (createBtn != null)
             {
                 createBtn.Click -= createBtn_Click;
                 createBtn.Click += createBtn_Click;
             }
 
-            Path tagIcon = GetTemplateChild("PART_TagIcon") as Path;
+            var tagIcon = GetTemplateChild("PART_TagIcon") as Path;
             if (tagIcon != null)
             {
                 tagIcon.MouseUp -= createBtn_Click;
@@ -149,7 +161,7 @@ namespace WPFTagControl
 
         internal TagItem InitializeNewTag(bool suppressEditing = false)
         {
-            var newItem = new TagItem() {IsEditing = !suppressEditing};
+            var newItem = new TagItem {IsEditing = !suppressEditing};
             AddTag(newItem);
             IsEditing = !suppressEditing;
             return newItem;

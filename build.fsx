@@ -85,8 +85,7 @@ Target "AssemblyInfo" (fun _ ->
           Attribute.Description summary
           Attribute.Version release.AssemblyVersion
           Attribute.FileVersion release.AssemblyVersion
-//          Attribute.StringAttribute("ThemeInfo","ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly", "System.Windows")
-          ]
+          Attribute.StringAttribute("ThemeInfo","ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly", "System.Windows")]
 
     let getProjectDetails projectPath =
         let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)
@@ -375,7 +374,7 @@ Target "BuildPackage" DoNothing
 Target "All" DoNothing
 
 "Clean"
-  ==> "AssemblyInfo"
+  //==> "AssemblyInfo" TODO: ThemeInfo needs to be created correctly
   ==> "Build"
   ==> "CopyBinaries"
  // ==> "RunTests"

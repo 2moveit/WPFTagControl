@@ -41,9 +41,7 @@ namespace WPFTagControl
         public TagControl()
         {
             TagAdded += (s, e) => RaiseTagsChanged();
-            TagAdded += (s, e) => UpdateSelectedTagsOnAdd(e);
             TagRemoved += (s, e) => RaiseTagsChanged();
-            TagRemoved += (s, e) => UpdateSelectedTagsOnRemove(e);
 
             SuggestedTags = new List<string>();
         }
@@ -96,12 +94,12 @@ namespace WPFTagControl
             c.ItemsSource = ((IList<string>) e.NewValue).Select(i => new TagItem(i)).ToList();
         }
 
-        private void UpdateSelectedTagsOnRemove(TagEventArgs e)
+        private void UpdateSelectedTagsOnRemove(TagItem removedTag)
         {
-            if (e.Item == null)
+            if (removedTag == null)
                 return;
-            if (!string.IsNullOrEmpty(e.Item.Text)) // Remove if delete button was clicked
-                SelectedTags.Remove(e.Item.Text);
+            if (!string.IsNullOrEmpty(removedTag.Text)) // Remove if delete button was clicked
+                SelectedTags.Remove(removedTag.Text);
             else  // Remove if backspace was used to delete tag (TagItem Text was changed to empty and was then removed)
             {
                 var source = (IList<TagItem>) ItemsSource;
@@ -111,14 +109,14 @@ namespace WPFTagControl
             }
         }
 
-        private void UpdateSelectedTagsOnAdd(TagEventArgs e)
+        private void UpdateSelectedTagsOnAdd(TagItem addedTag)
         {
             var source = (IList<TagItem>) ItemsSource;
             if (source.Count == SelectedTags.Count) //Update SelectedTags list if user edits tags
-                SelectedTags.Where(i => source.All(s => !s.Text.Equals(i) || i.Equals(e.Item.Text)))
+                SelectedTags.Where(i => source.All(s => !s.Text.Equals(i) || i.Equals(addedTag.Text)))
                     .ToList()
                     .ForEach(r => SelectedTags.Remove(r));
-            SelectedTags.Add(e.Item.Text);
+            SelectedTags.Add(addedTag.Text);
         }
 
         public event EventHandler<TagEventArgs> TagClick;
@@ -151,7 +149,10 @@ namespace WPFTagControl
             base.OnApplyTemplate();
 
             if (appliedTag != null)
+            {
+                UpdateSelectedTagsOnAdd(appliedTag);
                 RaiseTagAdded(appliedTag);
+            }
         }
 
         void createBtn_Click(object sender, RoutedEventArgs e)
@@ -183,11 +184,19 @@ namespace WPFTagControl
             {
                 ((IList) ItemsSource).Remove(tag); // assume IList for convenience
                 Items.Refresh();
-
-                if (TagRemoved != null && !cancelEvent)
-                    TagRemoved(this, new TagEventArgs(tag));
+                if (!cancelEvent)
+                {
+                    UpdateSelectedTagsOnRemove(tag);
+                    RaiseTagRemoved(tag);
+                }
             }
         }
+
+        private void RaiseTagRemoved(TagItem tag)
+        {
+            TagRemoved?.Invoke(this, new TagEventArgs(tag));
+        }
+
 
         internal void RaiseTagClick(TagItem tag)
         {

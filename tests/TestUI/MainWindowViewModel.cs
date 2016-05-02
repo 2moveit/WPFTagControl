@@ -19,8 +19,7 @@ namespace TestUI
             SuggestedTags = new List<string> {"Tag 1", "Tag 2", "Tag 3"};
             SelectedTags = new ObservableCollection<string>{ "TestTag"};
             SelectedTags.CollectionChanged += (sender, args) => 
-            Debug.WriteLine(SelectedTags.Aggregate("", (s,i)=> $"{s} {i}"));
-
+            Debug.WriteLine("SelectedTagsCollectionChanged: " + SelectedTags.Aggregate("", (s,i)=> $"{s} {i}"));
         }
 
         public List<string> SuggestedTags

@@ -1,3 +1,7 @@
+#### 0.3.0 - May 2 2016
+* Reset old value when leaving edit mode with dublicate value
+* Bugfix: TagsChanged not fired when leaving edit mode with mouse
+
 #### 0.2.1 - May 2 2016
 * Bugfix: TagsChanged fired before SelectedTags were changed
 

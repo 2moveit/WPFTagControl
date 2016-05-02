@@ -86,6 +86,7 @@ namespace WPFTagControl
                 };
                 btn.MouseDoubleClick += (s, e) =>
                 {
+                    valueBeforeEditing = this.Text;
                     var parent = GetParent();
                     parent?.RaiseTagDoubleClick(this);
                 };
@@ -93,6 +94,9 @@ namespace WPFTagControl
 
             base.OnApplyTemplate();
         }
+
+
+        private string valueBeforeEditing = "";
 
 
         void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -181,8 +185,12 @@ namespace WPFTagControl
             {
                 if (parent != null)
                 {
-                    if (isDuplicate(parent, Text))
+                    if (isDuplicate(parent, Text) && valueBeforeEditing == "")
                         parent.RemoveTag(this, true); // do not raise RemoveTag event
+                    else if (isDuplicate(parent, Text) && valueBeforeEditing != "")
+                        Text = valueBeforeEditing;
+                    else if(valueBeforeEditing != Text)
+                        parent.RaiseTagsChanged();
                 }
                 if (!(sender as AutoCompleteBox).IsDropDownOpen)
                 {

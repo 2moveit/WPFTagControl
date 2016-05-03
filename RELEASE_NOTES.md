@@ -1,3 +1,6 @@
+#### 0.4.0 - May 2 2016
+* Multiple bugfixes on firing events
+
 #### 0.3.0 - May 2 2016
 * Reset old value when leaving edit mode with dublicate value
 * Bugfix: TagsChanged not fired when leaving edit mode with mouse

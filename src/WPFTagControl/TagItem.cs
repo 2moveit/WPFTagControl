@@ -211,6 +211,8 @@ namespace WPFTagControl
                     else if (isEscapeClicked)
                     {
                         this.Text = valueBeforeEditing;
+                        if(Text== null)
+                            parent?.RemoveTag(this, true);
                     }
                 }
                 if (!(sender as AutoCompleteBox).IsDropDownOpen)
@@ -229,7 +231,7 @@ namespace WPFTagControl
 
                 //if (sender != null && !(sender as AutoCompleteBox).IsDropDownOpen)
                 //{
-                //    IsEditing = false;
+                 IsEditing = false;
                 //}
             }
             isEscapeClicked = false;

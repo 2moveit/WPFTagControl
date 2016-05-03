@@ -153,7 +153,14 @@ namespace WPFTagControl
                                 {
                                     if (isDuplicate(parent, Text))
                                         break;
-                                    parent.ApplyTemplate(this);
+                                    if (!string.IsNullOrEmpty(valueBeforeEditing))
+                                    {
+                                        parent.ApplyTemplate(this, true);
+                                        if(Text !=  valueBeforeEditing)
+                                            parent.RaiseTagEdited(this);
+                                    }
+                                    else
+                                        parent.ApplyTemplate(this);
                                     parent.SelectedItem = parent.InitializeNewTag(); //creates another tag
                                 }
                                 else
@@ -199,8 +206,12 @@ namespace WPFTagControl
                         parent.RemoveTag(this, true); // do not raise RemoveTag event
                     else if (isDuplicate(parent, Text) && valueBeforeEditing != "")
                         Text = valueBeforeEditing;
-                    else if(valueBeforeEditing != Text)
+                    else if(valueBeforeEditing != Text && !isEscapeClicked)
                         parent.RaiseTagEdited(this);
+                    else if (isEscapeClicked)
+                    {
+                        this.Text = valueBeforeEditing;
+                    }
                 }
                 if (!(sender as AutoCompleteBox).IsDropDownOpen)
                 {
@@ -215,9 +226,13 @@ namespace WPFTagControl
                     parent?.RemoveTag(this);
                 else if(string.IsNullOrEmpty(this.Text))
                     parent?.RemoveTag(this, true);
-                isEscapeClicked = false;
-            }
 
+                //if (sender != null && !(sender as AutoCompleteBox).IsDropDownOpen)
+                //{
+                //    IsEditing = false;
+                //}
+            }
+            isEscapeClicked = false;
             if (parent != null)
             {
                 parent.IsEditing = false;

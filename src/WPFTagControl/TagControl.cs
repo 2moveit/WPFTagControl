@@ -134,7 +134,7 @@ namespace WPFTagControl
             ApplyTemplate();
         }
 
-        public void ApplyTemplate(TagItem appliedTag = null)
+        public void ApplyTemplate(TagItem appliedTag = null, bool cancelEvent = false)
         {
             var createBtn = GetTemplateChild("PART_CreateTagButton") as Button;
             if (createBtn != null)
@@ -152,7 +152,7 @@ namespace WPFTagControl
 
             base.OnApplyTemplate();
 
-            if (appliedTag != null)
+            if (appliedTag != null && !cancelEvent)
             {
                 RaiseTagAdded(appliedTag);
             }

@@ -211,8 +211,10 @@ namespace WPFTagControl
             {
                 if (!string.IsNullOrWhiteSpace(valueBeforeEditing))
                     this.Text = valueBeforeEditing;
-                if(!isEscapeClicked)
+                if(!isEscapeClicked && !string.IsNullOrEmpty(this.Text))
                     parent?.RemoveTag(this);
+                else if(string.IsNullOrEmpty(this.Text))
+                    parent?.RemoveTag(this, true);
                 isEscapeClicked = false;
             }
 

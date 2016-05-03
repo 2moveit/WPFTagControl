@@ -55,5 +55,11 @@ namespace TestUI
         }
 
         #endregion
+
+        public void SelectedTagsChanged(IList<TagItem> items)
+        {
+            Debug.WriteLine("VM.TagItemsChanged: " + items.Aggregate("", (s, item) => $"{s} {item.Text}"));
+            Debug.WriteLine("VM.SelectedTagsChanged: " + SelectedTags.Aggregate("", (s, item) => $"{s} {item}"));
+        }
     }
 }

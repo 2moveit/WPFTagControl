@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -61,6 +62,7 @@ namespace WPFTagControl
             if (inputBox != null)
             {
                 inputBox.LostFocus += inputBox_LostFocus;
+                inputBox.GotFocus += inputBox_GotFocus;
                 inputBox.Loaded += inputBox_Loaded;
             }
 
@@ -86,7 +88,7 @@ namespace WPFTagControl
                 };
                 btn.MouseDoubleClick += (s, e) =>
                 {
-                    valueBeforeEditing = this.Text;
+                  //  valueBeforeEditing = this.Text;
                     var parent = GetParent();
                     parent?.RaiseTagDoubleClick(this);
                 };
@@ -98,6 +100,11 @@ namespace WPFTagControl
 
         private string valueBeforeEditing = "";
 
+
+        void inputBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            valueBeforeEditing = this.Text;
+        }
 
         void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -153,6 +160,7 @@ namespace WPFTagControl
                                     parent.Focus();
                                 break;
                             case Key.Escape: // reject tag
+                                isEscapeClicked = true;
                                 parent.Focus();
                                 //parent.RemoveTag(this, true); // do not raise RemoveTag event
                                 break;
@@ -174,6 +182,8 @@ namespace WPFTagControl
             }
         }
 
+        private bool isEscapeClicked = false;
+
         /// <summary>
         ///     Set IsEditing to false when the AutoCompleteBox loses keyboard focus.
         ///     This will change the template, displaying the tag as a button.
@@ -190,7 +200,7 @@ namespace WPFTagControl
                     else if (isDuplicate(parent, Text) && valueBeforeEditing != "")
                         Text = valueBeforeEditing;
                     else if(valueBeforeEditing != Text)
-                        parent.RaiseTagsChanged();
+                        parent.RaiseTagEdited(this);
                 }
                 if (!(sender as AutoCompleteBox).IsDropDownOpen)
                 {
@@ -199,7 +209,11 @@ namespace WPFTagControl
             }
             else
             {
-                parent?.RemoveTag(this); // do not raise RemoveTag event
+                if (!string.IsNullOrWhiteSpace(valueBeforeEditing))
+                    this.Text = valueBeforeEditing;
+                if(!isEscapeClicked)
+                    parent?.RemoveTag(this);
+                isEscapeClicked = false;
             }
 
             if (parent != null)

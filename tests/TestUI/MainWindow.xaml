@@ -20,6 +20,7 @@
                          TagClick="Ctl_Tags_TagClick"
                          TagRemoved="Ctl_Tags_OnTagRemoved"
                          TagsChanged="Ctl_Tags_OnTagsChanged">
+
             <!--<cont:TagControl.SuggestedTags>
                 <s:String>Tag One</s:String>
                 <s:String>Tag Two</s:String>

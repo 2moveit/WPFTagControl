@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +43,7 @@ namespace WPFTagControl
         {
             TagAdded += (s, e) => RaiseTagsChanged();
             TagRemoved += (s, e) => RaiseTagsChanged();
-
+            TagEdited += (s, e) => RaiseTagsChanged();
             SuggestedTags = new List<string>();
         }
 
@@ -109,6 +110,8 @@ namespace WPFTagControl
             }
         }
 
+
+
         private void UpdateSelectedTagsOnAdd(TagItem addedTag)
         {
             var source = (IList<TagItem>) ItemsSource;
@@ -122,6 +125,7 @@ namespace WPFTagControl
         public event EventHandler<TagEventArgs> TagClick;
         public event EventHandler<TagEventArgs> TagAdded;
         public event EventHandler<TagEventArgs> TagRemoved;
+        public event EventHandler<TagEventArgs> TagEdited;
         public event EventHandler<TagsChangedEventArgs> TagsChanged;
 
 
@@ -150,7 +154,6 @@ namespace WPFTagControl
 
             if (appliedTag != null)
             {
-                UpdateSelectedTagsOnAdd(appliedTag);
                 RaiseTagAdded(appliedTag);
             }
         }
@@ -186,14 +189,34 @@ namespace WPFTagControl
                 Items.Refresh();
                 if (!cancelEvent)
                 {
-                    UpdateSelectedTagsOnRemove(tag);
+                   
                     RaiseTagRemoved(tag);
+                }
+            }
+        }
+        public void RaiseTagEdited(TagItem tag)
+        {
+            UpdateSelectedTagsOnEdit();
+            Debug.WriteLine($"RaiseTagEdited: {tag.Text}");
+            TagEdited?.Invoke(this, new TagEventArgs(tag));
+        }
+
+        private void UpdateSelectedTagsOnEdit()
+        {
+            var source = (IList<TagItem>)ItemsSource; //ZUVIELE EVENTS WERDEN GESCHMISSEN
+            if (source.Count == SelectedTags.Count)
+            {
+                for (int i = 0; i < source.Count; i++)
+                {
+                    SelectedTags[i] = source[i].Text;
                 }
             }
         }
 
         private void RaiseTagRemoved(TagItem tag)
         {
+            UpdateSelectedTagsOnRemove(tag);
+            Debug.WriteLine($"RaiseTagRemoved: {tag.Text}");
             TagRemoved?.Invoke(this, new TagEventArgs(tag));
         }
 
@@ -206,11 +229,14 @@ namespace WPFTagControl
         internal void RaiseTagsChanged()
         {
             var tokenizedTagItems = (IList<TagItem>) ItemsSource;
+            Debug.WriteLine($"RaiseTagsChanged: {tokenizedTagItems.Aggregate("", (s, item) => $"{s} {item.Text}")}");
             TagsChanged?.Invoke(this, new TagsChangedEventArgs(tokenizedTagItems));
         }
 
         internal void RaiseTagAdded(TagItem tag)
         {
+            UpdateSelectedTagsOnAdd(tag);
+            Debug.WriteLine($"RaiseTagAdded: {tag.Text}");
             TagAdded?.Invoke(this, new TagEventArgs(tag));
         }
 
@@ -218,5 +244,7 @@ namespace WPFTagControl
         {
             tag.IsEditing = true;
         }
+
+
     }
 }

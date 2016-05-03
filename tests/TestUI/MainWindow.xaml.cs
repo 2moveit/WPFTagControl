@@ -33,6 +33,8 @@ namespace TestUI
         {
             SelectionChanged.Content = e.Items.Aggregate("", (s, item) => $"{s} {item.Text}");
             Debug.WriteLine("TagsChanged: " + e.Items.Aggregate("", (s, item) => $"{s} {item.Text}"));
+            var vm = DataContext as MainWindowViewModel;
+            vm?.SelectedTagsChanged(e.Items);
         }
 
 

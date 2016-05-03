@@ -87,10 +87,10 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
-            ApplyTemplate(appliedTag)
+            ApplyTemplate(appliedTag, cancelEvent)
           </code>
           <div class="tip" id="6">
-            <strong>Signature:</strong> appliedTag:TagItem -&gt; unit<br />
+            <strong>Signature:</strong> (appliedTag:TagItem * cancelEvent:bool) -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -144,10 +144,10 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
-            SelectedTags()
+            RaiseTagEdited(tag)
           </code>
           <div class="tip" id="10">
-            <strong>Signature:</strong> unit -&gt; unit<br />
+            <strong>Signature:</strong> tag:TagItem -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -158,7 +158,7 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
-            SuggestedTags()
+            SelectedTags()
           </code>
           <div class="tip" id="11">
             <strong>Signature:</strong> unit -&gt; unit<br />
@@ -172,10 +172,10 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
-            TagAdded
+            SuggestedTags()
           </code>
           <div class="tip" id="12">
-            <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagEventArgs&gt;,TagEventArgs&gt;<br />
+            <strong>Signature:</strong> unit -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
@@ -186,7 +186,7 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
-            TagClick
+            TagAdded
           </code>
           <div class="tip" id="13">
             <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagEventArgs&gt;,TagEventArgs&gt;<br />
@@ -200,7 +200,7 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
-            TagRemoved
+            TagClick
           </code>
           <div class="tip" id="14">
             <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagEventArgs&gt;,TagEventArgs&gt;<br />
@@ -214,9 +214,37 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
-            TagsChanged
+            TagEdited
           </code>
           <div class="tip" id="15">
+            <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagEventArgs&gt;,TagEventArgs&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
+            TagRemoved
+          </code>
+          <div class="tip" id="16">
+            <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagEventArgs&gt;,TagEventArgs&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '17', 17)" onmouseover="showTip(event, '17', 17)">
+            TagsChanged
+          </code>
+          <div class="tip" id="17">
             <strong>Signature:</strong> IEvent&lt;EventHandler&lt;TagsChangedEventArgs&gt;,TagsChangedEventArgs&gt;<br />
                       </div>
         </td>

@@ -202,7 +202,7 @@ namespace WPFTagControl
             {
                 if (parent != null)
                 {
-                    if (isDuplicate(parent, Text) && valueBeforeEditing == "")
+                    if (isDuplicate(parent, Text) && string.IsNullOrEmpty(valueBeforeEditing))
                         parent.RemoveTag(this, true); // do not raise RemoveTag event
                     else if (isDuplicate(parent, Text) && valueBeforeEditing != "")
                         Text = valueBeforeEditing;

@@ -206,6 +206,8 @@ namespace WPFTagControl
                         parent.RemoveTag(this, true); // do not raise RemoveTag event
                     else if (isDuplicate(parent, Text) && valueBeforeEditing != "")
                         Text = valueBeforeEditing;
+                    else if (string.IsNullOrEmpty(valueBeforeEditing) && !isEscapeClicked)
+                        parent.ApplyTemplate(this);
                     else if(valueBeforeEditing != Text && !isEscapeClicked)
                         parent.RaiseTagEdited(this);
                     else if (isEscapeClicked)

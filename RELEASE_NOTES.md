@@ -1,3 +1,7 @@
+#### 0.4.1 - May 2 2016
+* Bugfix: SelectedTags wrong if added with drop down click
+* Bugfix: Add of dublicate entry that is escaped or tabbed is not removed
+
 #### 0.4.0 - May 2 2016
 * Multiple bugfixes on firing events
 

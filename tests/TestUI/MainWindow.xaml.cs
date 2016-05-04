@@ -42,5 +42,12 @@ namespace TestUI
         {
             Removed.Content = e.Item.Text;
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainWindowViewModel;
+            vm?.SetTagsFromViewModel();
+
+        }
     }
 }

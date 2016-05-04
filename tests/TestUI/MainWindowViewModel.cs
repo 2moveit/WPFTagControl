@@ -61,5 +61,10 @@ namespace TestUI
             Debug.WriteLine("VM.TagItemsChanged: " + items.Aggregate("", (s, item) => $"{s} {item.Text}"));
             Debug.WriteLine("VM.SelectedTagsChanged: " + SelectedTags.Aggregate("", (s, item) => $"{s} {item}"));
         }
+
+        public void SetTagsFromViewModel()
+        {
+            SelectedTags = new ObservableCollection<string>(new List<string> { "Test from VM"}); //Workaround: SelectedTags.Add("Tag") does not work
+        }
     }
 }

@@ -7,7 +7,7 @@
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow"
         Width="525"
-        Height="350"
+        Height="400"
         ResizeMode="NoResize"
         mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Stretch">
@@ -39,5 +39,6 @@
         <Label x:Name="Added" Content="None" />
         <Label Content="Removed:" />
         <Label x:Name="Removed" Content="None" />
+        <Button Click="ButtonBase_OnClick" Content="Set Tags from VM" />
     </StackPanel>
 </Window>

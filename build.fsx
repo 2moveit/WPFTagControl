@@ -85,7 +85,7 @@ Target "AssemblyInfo" (fun _ ->
           Attribute.Description summary
           Attribute.Version release.AssemblyVersion
           Attribute.FileVersion release.AssemblyVersion
-          Attribute.StringAttribute("ThemeInfo","ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly", "System.Windows")]
+         ]
 
     let getProjectDetails projectPath =
         let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)
@@ -99,9 +99,9 @@ Target "AssemblyInfo" (fun _ ->
     |> Seq.map getProjectDetails
     |> Seq.iter (fun (projFileName, projectName, folderName, attributes) ->
         match projFileName with
-        | Fsproj -> CreateFSharpAssemblyInfo (folderName </> "AssemblyInfo.fs") attributes
-        | Csproj -> CreateCSharpAssemblyInfo ((folderName </> "Properties") </> "AssemblyInfo.cs") attributes
-        | Vbproj -> CreateVisualBasicAssemblyInfo ((folderName </> "My Project") </> "AssemblyInfo.vb") attributes
+        | Fsproj -> UpdateAttributes (folderName </> "AssemblyInfo.fs") attributes
+        | Csproj -> UpdateAttributes ((folderName </> "Properties") </> "AssemblyInfo.cs") attributes
+        | Vbproj -> UpdateAttributes ((folderName </> "My Project") </> "AssemblyInfo.vb") attributes
         | Shproj -> ()
         )
 )
@@ -374,7 +374,7 @@ Target "BuildPackage" DoNothing
 Target "All" DoNothing
 
 "Clean"
-  //==> "AssemblyInfo" TODO: ThemeInfo needs to be created correctly
+  ==> "AssemblyInfo"
   ==> "Build"
   ==> "CopyBinaries"
  // ==> "RunTests"

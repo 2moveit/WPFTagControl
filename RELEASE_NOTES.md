@@ -1,3 +1,6 @@
+#### 0.4.2 - May 19 2016
+* Fixed AsseblyInfo gerneration in build.fsx to support ThemeInfoAttribute
+
 #### 0.4.1 - May 2 2016
 * Bugfix: SelectedTags wrong if added with drop down click
 * Bugfix: Add of dublicate entry that is escaped or tabbed is not removed

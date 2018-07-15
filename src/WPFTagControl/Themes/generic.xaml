@@ -5,6 +5,8 @@
                     xmlns:tkInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit">
 
     <SolidColorBrush x:Key="HighlightBrush" Color="DodgerBlue" />
+    <SolidColorBrush x:Key="TagBackgroundColor" Color="#01FFFFFF" />
+    <SolidColorBrush x:Key="TagForegroundColor" Color="Black" />
 
     <!--  EvernoteTagControl default style  -->
     <Style TargetType="{x:Type local:TagControl}">
@@ -101,11 +103,12 @@
                     <Button x:Name="PART_TagButton"
                             Margin="{TemplateBinding Margin}"
                             Content="{TemplateBinding Text}"
-                            Padding="{TemplateBinding Padding}">
+                            Padding="{TemplateBinding Padding}" 
+                            Foreground="{StaticResource TagForegroundColor}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Margin="{TemplateBinding Margin}"
-                                        Background="#01FFFFFF"
+                                        Background="{StaticResource TagBackgroundColor}"
                                         BorderBrush="Gray"
                                         BorderThickness="1"
                                         CornerRadius="2"
